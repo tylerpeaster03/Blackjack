@@ -6,16 +6,14 @@
 
 class Blackjack {
 public:
-	void startBlackjackGame(std::vector <std::string> deckOfCards, int playerCount);
-	void giveAllEntitiesCards();
-	void giveCard(std::vector <std::string> pCards);
-	void showCardUp(std::vector <std::string> entityCards, int num);
+	void startBlackjackGame(std::vector <std::string> deckOfCardsPassed);
+	std::vector <std::string> addCard(std::vector <std::string> playerOrDealerDeck);
+	void displayTheFirstCardsPassed();
 
 private:
-	std::vector <std::string> deckOfCards, dealerCards;
-	std::vector <std::string> pCards1, pCards2, pCards3, pCards4, pCards5, pCards6, pCards7;	//player cards
-	int playerCount{}, cardID{};
+	std::vector <std::string> deckOfCards, playerCards, dealerCards;
 	std::string tempS;
+	int cardID{};
 };
 
 #endif

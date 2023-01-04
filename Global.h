@@ -6,7 +6,6 @@
 void separatorUI();
 void clearScreen();
 void colorText(std::string color, std::string text);
-int cinIntCheck(int num);
-int cinIntCheckPlusBounds(int num, int lowestBound, int greatestBound);
+void autoDisplayColorForCard(std::string card);
 
 #endif

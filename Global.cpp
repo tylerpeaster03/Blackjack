@@ -54,29 +54,10 @@ void colorText (std::string color, std::string text)
 	std::cout << "\033[0m\t\t";
 }
 
-int cinIntCheck(int num)
+void autoDisplayColorForCard(std::string card)
 {
-	while (!(std::cin >> num))
-	{
-		std::cout << "ERROR: Input out of range: ";
-		std::cin.clear();
-		std::cin.ignore(132, '\n');
-	}
-	return num;
-}
-
-int cinIntCheckPlusBounds(int num, int lowestBound, int greatestBound)
-{
-	while (1)
-	{
-		num = cinIntCheck(num);
-		if (num < lowestBound)
-			std::cout << "Input cannot be less than " << lowestBound << "!\n\n";
-		else if (num > greatestBound)
-			std::cout << "Input cannot be greater than " << greatestBound << "!\n\n";
-		else
-			break;
-	}
-
-	return num;
+	if (card[6] == 'S' || card[6] == 'C')
+		colorText("brightWhite", card);
+	else if (card[6] == 'D' || card[6] == 'H')
+		colorText("brightRed", card);
 }
