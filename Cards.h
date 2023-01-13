@@ -6,5 +6,6 @@
 
 std::vector <std::string> createDeckOfCards();
 std::vector <std::string> shuffleDeckOfCards(std::vector <std::string> deckOfCards);
+std::vector <int> createPoints(std::vector <std::string> deckOfCards);
 
 #endif

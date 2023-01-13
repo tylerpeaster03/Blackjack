@@ -1,4 +1,5 @@
 #include "GameBJ.h"
+#include "Cards.h"
 #include "Global.h"
 
 #include <iostream>
@@ -28,6 +29,7 @@ void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed)
 	//-------------------------------------
 
 	displayTheFirstCardsPassed();
+	menu();
 }
 
 std::vector <std::string> Blackjack::addCard(std::vector <std::string> playerOrDealerDeck)
@@ -55,5 +57,49 @@ void Blackjack::displayTheFirstCardsPassed()
 	autoDisplayColorForCard(playerCards[0]);
 	std::cout << "\n";
 	autoDisplayColorForCard(playerCards[1]);
+	std::cout << "\n\n";
+}
 
+void Blackjack::menu()
+{
+	/*
+	Hold -- ALways Option
+	Hit -- Always Option
+	Double Down -- Only if player hasn't hit
+	Split -- Only if player gets two indentical cards.
+	Split -- Can be done up to FOUR times.
+
+	If player hits blackjack, game must automatically end with a win
+	If player gets above 21, game must automatically end with a loss
+	If player and dealer have the same amount of cards, a push (tie) happens
+	*/
+
+	 pointsOfDealer = createPoints(dealerCards);
+	 pointsOfPlayer = createPoints(playerCards);
+	 gameStateDealer = pointsCheck(pointsOfDealer);
+	 gameStatePlayer = pointsCheck(pointsOfPlayer);
+}
+
+char Blackjack::pointsCheck(std::vector <int> points)
+{
+	/*
+	Reminder for me:
+	Return 
+	'c' for continuing without a winner or loser (both are below 21)
+	'w' for player win
+	'l' for player loss
+	'p' for push (tie)
+	you don't need a variable just return raw 'c', 'w', etc
+	*/
+
+	/*
+	if (win)
+	return 'w'
+	else if (loss)
+	return 'l'
+	etc
+	*/
+
+	//placeholder
+	return 'c';
 }

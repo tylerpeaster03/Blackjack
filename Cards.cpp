@@ -79,3 +79,29 @@ std::vector <std::string> shuffleDeckOfCards(std::vector <std::string> deckOfCar
 
 	return deckOfCards;
 }
+
+std::vector <int> createPoints(std::vector <std::string> deckOfCards)
+{
+	std::vector <int> pointsOfDeck;
+	int tempI{};
+	std::string tempS;
+
+	for (int i = 0; i < deckOfCards.size(); i++)
+	{
+		tempS = deckOfCards[i][0];
+
+		if (tempS == "1")
+			pointsOfDeck.push_back(10);
+		else if (tempS == "J" || tempS == "Q" || tempS == "K")
+			pointsOfDeck.push_back(10);
+		else if (tempS == "A")	//Ace will always be assigned 11 points, but a later function will subtract 10 if a player goes >21 with Ace
+			pointsOfDeck.push_back(11);
+		else
+		{
+			tempI = std::stoi(tempS);
+			pointsOfDeck.push_back(tempI);
+		}
+	}
+
+	return pointsOfDeck;
+}
