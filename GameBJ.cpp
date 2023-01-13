@@ -17,6 +17,7 @@ void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed)
 
 	//Background Processes
 	clearScreen();
+	reset();
 	deckOfCards = deckOfCardsPassed;
 
 	//THIS ORDER IS VERY IMPORTANT, FOLLOWS BLACKJACK RULES
@@ -30,6 +31,17 @@ void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed)
 
 	displayTheFirstCardsPassed();
 	menu();
+}
+
+void Blackjack::reset()
+{
+	deckOfCards.clear();
+	playerCards.clear();
+	dealerCards.clear();
+	pointsOfPlayer.clear();
+	pointsOfDealer.clear();
+	cardID = 0;
+	totalPoints = 0;
 }
 
 std::vector <std::string> Blackjack::addCard(std::vector <std::string> playerOrDealerDeck)
@@ -83,23 +95,39 @@ void Blackjack::menu()
 char Blackjack::pointsCheck(std::vector <int> points)
 {
 	/*
-	Reminder for me:
-	Return 
-	'c' for continuing without a winner or loser (both are below 21)
-	'w' for player win
-	'l' for player loss
-	'p' for push (tie)
-	you don't need a variable just return raw 'c', 'w', etc
-	*/
+	Rules for splitting hands
 
-	/*
-	if (win)
-	return 'w'
-	else if (loss)
-	return 'l'
-	etc
-	*/
+	It is possible to Split twice within one hand. Say you are originally dealt a 10 and a Jack, 
+	and you choose to Split. You now have two hands in play (10 & J). If the next card you are dealt on your 10 is a Queen, 
+	you have the option to Split again. You now have three hands in play, all showing equal value (10, J, & Q).
 
-	//placeholder
-	return 'c';
+	However, it is not possible to Split again from a hand that was already split. 
+	That means that the hands showing 10 and Queen must be played; your options will be Hit, Stand, and Double Down. 
+	However, the Jack hand has still only been split once. If a King comes up on the Jack, you will have the option to Split again. 
+	If you Split on two Aces, no further splits are allowed. 
+	A Split on two Aces acts similarly to a Double Down in that only one card will be added to each half of the split hand.
+	*/
+	totalPoints = 0;
+
+	for (int i = 0; i < points.size(); i++)
+		totalPoints += points[i];
+
+	for (int i = 0; i < points.size(); i++)
+	{
+		for (int j = 0; j < points.size(); j++)
+		{
+			if (points[i] == points[j])
+			{
+				//check for split
+			}
+		}
+	}
+
+	if (totalPoints < 21)
+		return 'c';
+	else if (totalPoints == 21)
+		return 'b';
+	else if (totalPoints > 21)
+		return 'l';
+
 }
