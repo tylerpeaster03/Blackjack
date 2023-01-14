@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed)
+void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed, int deckAmount)
 {
 	/*
 	Deal from the dealer's left to right (start with the player to your far left.) 
@@ -16,6 +16,7 @@ void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed)
 	*/
 
 	//Background Processes
+	amountOfDecks = deckAmount;
 	clearScreen();
 	reset();
 	deckOfCards = deckOfCardsPassed;
@@ -28,8 +29,6 @@ void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed)
 	playerCards = addCard(playerCards);
 	dealerCards = addCard(dealerCards);
 	//-------------------------------------
-
-	displayTheFirstCardsPassed();
 	menu();
 }
 
@@ -42,6 +41,8 @@ void Blackjack::reset()
 	pointsOfDealer.clear();
 	cardID = 0;
 	totalPoints = 0;
+	allowSplit = false;
+	allowAceSplit = false;
 }
 
 std::vector <std::string> Blackjack::addCard(std::vector <std::string> playerOrDealerDeck)
@@ -53,29 +54,10 @@ std::vector <std::string> Blackjack::addCard(std::vector <std::string> playerOrD
 	return playerOrDealerDeck;
 }
 
-void Blackjack::displayTheFirstCardsPassed()
-{
-	separatorUI();
-	colorText("brightRed", "Dealer:");
-	std::cout << "\n\n";
-	colorText("cyan", "THIS CARD IS FLIPPED");
-	std::cout << "\n";
-	autoDisplayColorForCard(dealerCards[1]);
-
-	separatorUI();
-	colorText("brightBlue", "You: ");
-	std::cout << "\n\n";
-
-	autoDisplayColorForCard(playerCards[0]);
-	std::cout << "\n";
-	autoDisplayColorForCard(playerCards[1]);
-	std::cout << "\n\n";
-}
-
 void Blackjack::menu()
 {
 	/*
-	Hold -- ALways Option
+	Hold -- ALways Option, can no longer hit after hold
 	Hit -- Always Option
 	Double Down -- Only if player hasn't hit
 	Split -- Only if player gets two indentical cards.
@@ -84,12 +66,90 @@ void Blackjack::menu()
 	If player hits blackjack, game must automatically end with a win
 	If player gets above 21, game must automatically end with a loss
 	If player and dealer have the same amount of cards, a push (tie) happens
+
+	The dealer does not have the option of splitting or doubling down
 	*/
 
-	 pointsOfDealer = createPoints(dealerCards);
-	 pointsOfPlayer = createPoints(playerCards);
-	 gameStateDealer = pointsCheck(pointsOfDealer);
-	 gameStatePlayer = pointsCheck(pointsOfPlayer);
+	 
+	while (1)
+	{
+		pointsOfDealer = createPoints(dealerCards);
+		gameStateDealer = pointsCheck(pointsOfDealer);
+
+		//Visual Menu Begins
+		//-------------------------------------
+		clearScreen();
+		amountOfDeckMessage();
+
+		//Dealer
+		//-------------------------------------
+		separatorUI();
+		colorText("brightRed", "Dealer:");
+		std::cout << "\n\n";
+		colorText("cyan", "THIS CARD IS FLIPPED");
+		std::cout << "\n";
+
+		for (int i = 1; i < dealerCards.size(); i++)
+		{
+			autoDisplayColorForCard(dealerCards[i]);
+			std::cout << "\n";
+		}
+		//-------------------------------------
+
+
+		//Player
+		//-------------------------------------
+		separatorUI();
+		colorText("brightBlue", "Player: ");
+		std::cout << "\n\n";
+
+		for (int i = 0; i < playerCards.size(); i++)
+		{
+			autoDisplayColorForCard(playerCards[i]);
+			std::cout << "\n";
+		}
+
+		/*
+		Split Decks Display
+		*/
+
+		//-------------------------------------
+
+		separatorUI();
+		if (gameStateDealer == 'l' && gameStatePlayer == 'l' || gameStateDealer == 'b' && gameStatePlayer == 'b')
+		{
+			std::cout << "\nIt's a Push!\n";
+			separatorUI();
+			break;
+		}
+		if (gameStateDealer == 'l')
+		{
+			std::cout << "\nDealer busted!\n";
+			separatorUI();
+			break;
+		}
+		if (gameStateDealer == 'b')
+		{
+			std::cout << "\nDealer got Blackjack!\n";
+			separatorUI();
+			break;
+		}
+		if (gameStatePlayer == 'l')
+		{
+			std::cout << "\nPlayer busted!\n";
+			separatorUI();
+			break;
+		}
+		if (gameStatePlayer == 'b')
+		{
+			std::cout << "\nPlayer got Blackjack!\n";
+			separatorUI();
+		}
+
+		//This needs to go after player makes hit/stand/etc option
+		dealerAi();
+		//-------------------------------------
+	}
 }
 
 char Blackjack::pointsCheck(std::vector <int> points)
@@ -118,8 +178,24 @@ char Blackjack::pointsCheck(std::vector <int> points)
 		{
 			if (points[i] == points[j])
 			{
-				//check for split
+				if (points[i] == 1 || points[i] == 10)
+					allowAceSplit = true;
+				else
+				{
+					allowSplit = true;
+					cardThatAllowsSplit1 = playerCards[i];
+					cardThatAllowsSplit2 = playerCards[j];
+				}
 			}
+		}
+	}
+
+	if (totalPoints > 21)
+	{
+		for (int i = 0; i < points.size(); i++)
+		{
+			if (points[i] == 11)
+				totalPoints -= 10;
 		}
 	}
 
@@ -129,5 +205,26 @@ char Blackjack::pointsCheck(std::vector <int> points)
 		return 'b';
 	else if (totalPoints > 21)
 		return 'l';
+}
 
+void Blackjack::dealerAi()
+{
+	totalPoints = 0;
+	for (int i = 0; i < pointsOfDealer.size(); i++)
+		totalPoints += pointsOfDealer[i];
+
+	if (totalPoints < 17)
+	{
+		dealerCards = addCard(dealerCards);
+	}
+}
+
+void Blackjack::amountOfDeckMessage()
+{
+	if (amountOfDecks == 1)
+		std::cout << "Home Style -- 1 Deck";
+	else if (amountOfDecks == 6)
+		std::cout << "Casino Style -- 6 Decks";
+	else
+		std::cout << "Custom Style -- " << amountOfDecks << " Decks";
 }
