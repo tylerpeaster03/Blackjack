@@ -68,6 +68,9 @@ private:
 
 int main()
 {
+	char test{};
+	test = cinCharCheck(test);
+
 	StartUp start;
 	std::vector <std::string> deckOfCards, shuffledDeck;
 	Blackjack bj;

@@ -146,6 +146,22 @@ void Blackjack::menu()
 			separatorUI();
 		}
 
+		// Player Menu
+
+		//Always Options
+		std::cout
+			<< "H --- Hit\n"
+			<< "S --- Stand\n";
+		//Reminder: can use strings instead of char for input validation purpose
+			
+		//Conditional Options
+
+		/*
+		Player can keep hitting until they either bust, stand, or Blackjack
+		*/
+
+		//
+
 		//This needs to go after player makes hit/stand/etc option
 		dealerAi();
 		//-------------------------------------
