@@ -17,10 +17,10 @@ public:
 private:
 	std::vector <std::string> deckOfCards, playerCards, dealerCards;
 	std::vector <int> pointsOfPlayer, pointsOfDealer;
-	std::string tempS, cardThatAllowsSplit1, cardThatAllowsSplit2;
+	std::string tempS, cardThatAllowsSplit1, cardThatAllowsSplit2, choice;
 	int cardID{}, totalPoints{}, amountOfDecks;
 	char gameStatePlayer, gameStateDealer;
-	bool allowSplit{}, allowAceSplit{};
+	bool allowSplit{}, allowAceSplit{}, hasHit{};
 };
 
 #endif

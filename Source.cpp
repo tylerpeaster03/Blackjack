@@ -57,9 +57,10 @@ public:
 		/*
 		Casino Style -- Six Decks
 		Home Style -- One Deck
+		Custom Style -- Between 1-8 Deck(s)
 		*/
 	}
-	int getAmountOfDecks() { return amountOfDecks; }
+	int getAmountOfDecks() const { return amountOfDecks; }
 
 private:
 	int start{}, amountOfDecks{};
@@ -68,9 +69,6 @@ private:
 
 int main()
 {
-	char test{};
-	test = cinCharCheck(test);
-
 	StartUp start;
 	std::vector <std::string> deckOfCards, shuffledDeck;
 	Blackjack bj;

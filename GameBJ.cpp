@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iomanip>
 
 void Blackjack::startBlackjackGame(std::vector <std::string> deckOfCardsPassed, int deckAmount)
 {
@@ -43,6 +44,7 @@ void Blackjack::reset()
 	totalPoints = 0;
 	allowSplit = false;
 	allowAceSplit = false;
+	hasHit = false;
 }
 
 std::vector <std::string> Blackjack::addCard(std::vector <std::string> playerOrDealerDeck)
@@ -146,25 +148,62 @@ void Blackjack::menu()
 			separatorUI();
 		}
 
+		//-------------------------------------
 		// Player Menu
 
 		//Always Options
 		std::cout
 			<< "H --- Hit\n"
 			<< "S --- Stand\n";
-		//Reminder: can use strings instead of char for input validation purpose
 			
 		//Conditional Options
+		if (hasHit == false)
+			std::cout << "DD -- Double Down\n";
+		if (allowSplit == true || allowAceSplit == true)
+			std::cout << "SP -- Split\n";
+
+	menuStart:
+		std::getline(std::cin >> std::ws, choice);	//didn't get to test
+
+		if (choice == "H" || choice == "h")
+		{
+			hasHit == true;
+		}
+		else if (choice == "S" || choice == "s")
+		{
+
+		}
+		else if (choice == "DD" || choice == "dd" || choice == "Dd" || choice == "dD")
+		{
+			if (hasHit == true)
+			{
+				std::cout << "\nInvalid Input!\n";
+				goto menuStart;
+			}
+		}
+		else if (choice == "SP" || choice == "sp" || choice == "Sp" || choice == "sP")
+		{
+			if (allowSplit == true || allowAceSplit == true)
+			{
+
+			}
+			else
+				goto menuStart;
+		}
+		else
+		{
+			std::cout << "\nInvalid Input!\n";
+			goto menuStart;
+		}
 
 		/*
 		Player can keep hitting until they either bust, stand, or Blackjack
 		*/
 
-		//
-
-		//This needs to go after player makes hit/stand/etc option
-		dealerAi();
 		//-------------------------------------
+
+		
+		dealerAi();	//This needs to go after player makes hit/stand/etc option
 	}
 }
 
