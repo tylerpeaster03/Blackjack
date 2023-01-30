@@ -153,27 +153,28 @@ void Blackjack::menu()
 
 		//Always Options
 		std::cout
-			<< "H --- Hit\n"
-			<< "S --- Stand\n";
+			<< "1 --- Hit\n"
+			<< "2 --- Stand\n";
 			
 		//Conditional Options
 		if (hasHit == false)
-			std::cout << "DD -- Double Down\n";
+			std::cout << "3 -- Double Down\n";
 		if (allowSplit == true || allowAceSplit == true)
-			std::cout << "SP -- Split\n";
+			std::cout << "4 -- Split\n";
 
 	menuStart:
-		std::getline(std::cin >> std::ws, choice);	//didn't get to test
+		choice = cinIntCheckPlusBounds(choice, 1, 4);
+		std::cin.ignore();
 
-		if (choice == "H" || choice == "h")
+		if (choice == 1)
 		{
 			hasHit == true;
 		}
-		else if (choice == "S" || choice == "s")
+		else if (choice == 2)
 		{
 
 		}
-		else if (choice == "DD" || choice == "dd" || choice == "Dd" || choice == "dD")
+		else if (choice == 3)
 		{
 			if (hasHit == true)
 			{
@@ -181,7 +182,7 @@ void Blackjack::menu()
 				goto menuStart;
 			}
 		}
-		else if (choice == "SP" || choice == "sp" || choice == "Sp" || choice == "sP")
+		else if (choice == 4)
 		{
 			if (allowSplit == true || allowAceSplit == true)
 			{
