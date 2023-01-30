@@ -164,7 +164,7 @@ void Blackjack::menu()
 
 	menuStart:
 		choice = cinIntCheckPlusBounds(choice, 1, 4);
-		std::cin.ignore();
+		choice = 1;
 
 		if (choice == 1)
 		{
